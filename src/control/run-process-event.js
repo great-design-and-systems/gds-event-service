@@ -32,6 +32,7 @@ export default class RunProcessEvent {
                                         });
                                     });
                                 } else {
+                                    resultJob.context = resultInput;
                                     callback(undefined, resultJob);
                                 }
                             });

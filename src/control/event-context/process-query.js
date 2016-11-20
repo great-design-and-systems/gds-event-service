@@ -13,7 +13,7 @@ export default class ProcessQuery {
 }
 
 function processQuery(eventJobId, query, callback) {
-    const resultQuery = [];
+    let resultQuery = [];
     batch(query).sequential()
         .each((field, value, next) => {
             if (value instanceof Array) {
@@ -26,7 +26,7 @@ function processQuery(eventJobId, query, callback) {
                             });
                         });
                     } else {
-                        resultQuery.concat(result);
+                        resultQuery = resultQuery.concat(result);
                         next();
                     }
                 });
