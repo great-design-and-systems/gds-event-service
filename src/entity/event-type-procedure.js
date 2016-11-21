@@ -10,9 +10,6 @@ const EventTypeProcedureSchema = mongoose.Schema({
         type: String,
         required: [true, 'Root event job ID is required.']
     },
-    interval: {
-        type: Number
-    },
     createdOn: { type: Date, default: Date.now }
 });
 EventTypeProcedureSchema.plugin(mongoosePaginate);
