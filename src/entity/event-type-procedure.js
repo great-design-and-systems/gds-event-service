@@ -6,16 +6,9 @@ const EventTypeProcedureSchema = mongoose.Schema({
         type: String,
         required: [true, 'Event Job ID is required.']
     },
-    rootEventJobId: {
+    nextEventJobId: {
         type: String,
         required: [true, 'Root event job ID is required.']
-    },
-    previousEventJobId: {
-        type: String
-    },
-    nextData: {
-        type: String,
-        required: [true, 'Next data is required.']
     },
     interval: {
         type: Number

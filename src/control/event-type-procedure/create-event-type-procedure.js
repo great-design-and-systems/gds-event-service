@@ -1,14 +1,12 @@
 import EventTypeProcedureModel from '../../entity/event-type-procedure';
 
 export default class CreateEventTypeProcedure {
-  constructor(eventJobId, rootEventJobId, nextData, previousEventJobId, interval, callback) {
+  constructor(eventJobId, nextEventJobId, interval, callback) {
     EventTypeProcedureModel.create({
-        eventJobId: eventJobId,
-        rootEventJobId: rootEventJobId,
-        nextData: nextData,
-        previousEventJobId: previousEventJobId,
-        interval: interval
-      },
+      eventJobId: eventJobId,
+      nextEventJobId: nextEventJobId,
+      interval: interval
+    },
       (err, result) => {
         if (err) {
           callback({
