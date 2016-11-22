@@ -2,7 +2,7 @@ import CreateEventJob from './event-job/create-event-job';
 import CreateEventTypeScheduled from './event-type-scheduled/create-event-type-scheduled';
 import ProcessInput from '../control/process-input';
 import RemoveEventJobById from './event-job/remove-event-job-by-id';
-import RunProcedureEvent from './run-run-procedure-event';
+import RunProcedureEvent from './run-procedure-event';
 import RunProcessEvent from './run-process-event';
 import batch from 'batchflow';
 import lodash from 'lodash';
