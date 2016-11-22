@@ -2,9 +2,9 @@ import CreateEventJob from './event-job/create-event-job';
 import CreateEventTypeScheduled from './event-type-scheduled/create-event-type-scheduled';
 import ProcessInput from '../control/process-input';
 import RemoveEventJobById from './event-job/remove-event-job-by-id';
+import RunProcessEvent from './run-process-event';
 import batch from 'batchflow';
 import lodash from 'lodash';
-import RunProcessEvent from './run-process-event';
 
 export default class RunScheduledEvent {
     constructor(eventName, context, callback) {
@@ -31,7 +31,7 @@ export default class RunScheduledEvent {
                                         global.gdsLogger.logError(errScheduled);
                                         new RemoveEventJobById(processJob._id, () => {
                                             callback({
-                                                message: 'Failed creating event context for job id ' + processJob._id
+                                                message: 'Failed creating event type scheduled for job id ' + processJob._id
                                             });
                                         });
                                     } else {

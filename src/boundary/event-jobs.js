@@ -3,11 +3,15 @@ import GetEventByName from '../control/event/get-event-by-name';
 import GetEventContextById from '../control/event-context/get-event-context-by-id';
 import GetEventJobById from '../control/event-job/get-event-job-by-id';
 import GetEventJobs from '../control/event-job/get-event-jobs';
+import GetEventTypeScheduledByJobId from '../control/event-type-scheduled/get-event-type-scheduled-by-job-id';
 import RemoveEventContextById from '../control/event-context/remove-event-context-by-job-id';
 import RemoveEventContextByJobId from '../control/event-context/remove-event-context-by-job-id';
 import RemoveEventJobById from '../control/event-job/remove-event-job-by-id';
 import RemoveEventTypeProcessByJobId from '../control/event-type-process/remove-event-type-process-by-job-id';
+import RemoveEventTypeScheduledByJobId from '../control/event-type-scheduled/remove-event-type-scheduled-by-job-id';
+import RunProcedureEvent from '../control/run-procedure-event';
 import RunProcessEvent from '../control/run-process-event';
+import RunScheduledEvent from '../control/run-scheduled-event';
 import UpdateEventContext from '../control/event-context/update-event-context';
 import UpdateEventJobStatusToCompleted from '../control/event-job/update-event-job-status-to-completed';
 import UpdateEventJobStatusToInProgress from '../control/event-job/update-event-job-status-to-in-progress';
@@ -16,9 +20,7 @@ import UpdateEventJobStatusToNew from '../control/event-job/update-event-job-sta
 import UpdateEventJobStatusToOnHold from '../control/event-job/update-event-job-status-to-on-hold';
 import UpdateEventJobStatusToScheduled from '../control/event-job/update-event-job-status-to-scheduled';
 import UpdateEventJobStatusToStopped from '../control/event-job/update-event-job-status-to-stopped';
-import RunScheduledEvent from '../control/run-scheduled-event';
-import RemoveEventTypeScheduledByJobId from '../control/event-type-scheduled/remove-event-type-scheduled-by-job-id';
-import GetEventTypeScheduledByJobId from '../control/event-type-scheduled/get-event-type-scheduled-by-job-id';
+
 export default class EventJobService {
 
     getJobs(callback) {
@@ -36,6 +38,9 @@ export default class EventJobService {
                     break;
                 case 'SCHEDULED':
                     new RunScheduledEvent(eventName, context, callback.bind(this));
+                    break;
+                case 'PROCEDURE':
+                    new RunProcedureEvent(eventName, context, callback.bind(this));
                     break;
             }
 

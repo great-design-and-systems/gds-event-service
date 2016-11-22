@@ -211,6 +211,41 @@ export default class EventResource {
                 contextDTO.addPut('updateContextField', 'http://' + req.headers.host + API + 'update-context-field/' + contextDTO.data._id);
               });
             }
+          } else if (result && result.eventSequence) {
+            result.eventSequence.forEach(sequence => {
+              sequence.addDelete('removeJob', 'http://' + req.headers.host + API + 'remove-job/' + sequence.data.jobId);
+              sequence.addGet('getJob', 'http://' + req.headers.host + API + 'get-job/' + sequence.data.jobId);
+              if (sequence.data.context) {
+                if (sequence.data.context.body) {
+                  sequence.data.context.body.forEach(contextDTO => {
+                    contextDTO.addGet('getContextFieldById', 'http://' + req.headers.host + API + 'get-context-field-by-id/' + contextDTO.data._id);
+                    contextDTO.addDelete('removeContextFieldById', 'http://' + req.headers.host + API + 'remove-context-field-by-id/' + contextDTO.data._id);
+                    contextDTO.addPut('updateContextField', 'http://' + req.headers.host + API + 'update-context-field/' + contextDTO.data._id);
+                  });
+                }
+                if (sequence.data.context.header) {
+                  sequence.data.context.header.forEach(contextDTO => {
+                    contextDTO.addGet('getContextFieldById', 'http://' + req.headers.host + API + 'get-context-field-by-id/' + contextDTO.data._id);
+                    contextDTO.addDelete('removeContextFieldById', 'http://' + req.headers.host + API + 'remove-context-field-by-id/' + contextDTO.data._id);
+                    contextDTO.addPut('updateContextField', 'http://' + req.headers.host + API + 'update-context-field/' + contextDTO.data._id);
+                  });
+                }
+                if (sequence.data.context.param) {
+                  sequence.data.context.param.forEach(contextDTO => {
+                    contextDTO.addGet('getContextFieldById', 'http://' + req.headers.host + API + 'get-context-field-by-id/' + contextDTO.data._id);
+                    contextDTO.addDelete('removeContextFieldById', 'http://' + req.headers.host + API + 'remove-context-field-by-id/' + contextDTO.data._id);
+                    contextDTO.addPut('updateContextField', 'http://' + req.headers.host + API + 'update-context-field/' + contextDTO.data._id);
+                  });
+                }
+                if (sequence.data.context.query) {
+                  sequence.data.context.query.forEach(contextDTO => {
+                    contextDTO.addGet('getContextFieldById', 'http://' + req.headers.host + API + 'get-context-field-by-id/' + contextDTO.data._id);
+                    contextDTO.addDelete('removeContextFieldById', 'http://' + req.headers.host + API + 'remove-context-field-by-id/' + contextDTO.data._id);
+                    contextDTO.addPut('updateContextField', 'http://' + req.headers.host + API + 'update-context-field/' + contextDTO.data._id);
+                  });
+                }
+              }
+            });
           }
           res.status(200).send(domain);
         }
