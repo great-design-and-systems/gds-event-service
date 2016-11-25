@@ -28,6 +28,7 @@ export default class EventResource {
       domain.addPut('updateContextField', 'http://' + req.headers.host + API + 'update-context-field/:contextId');
       domain.addPut('updateJobStatus', 'http://' + req.headers.host + API + 'jobs/:eventJobId/set-status/:status');
       domain.addGet('getJobs', 'http://' + req.headers.host + API + 'jobs');
+      domain.addGet('getJobsByStatus', 'http://' + req.headers.host + API + 'jobs/:status');
       res.status(200).send(domain);
     });
 
@@ -305,6 +306,31 @@ export default class EventResource {
 
     app.get(API + 'jobs', (req, res) => {
       eventJobService.getJobs((err, result) => {
+        if (err) {
+          res.status(500).send(new GDSDomainDTO('ERROR_MESSAGE', err.message));
+        } else {
+          const resultDTOData = [];
+          const domain = new GDSDomainDTO('GET-JOBS', resultDTOData);
+          if (result) {
+            result.forEach((job) => {
+              const jobDom = new GDSDomainDTO('JOB', job);
+              jobDom.addDelete('removeJob', 'http://' + req.headers.host + API + 'remove-job/' + job._id);
+              jobDom.addPut('setJobToInProgress', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/IN_PROGRESS');
+              jobDom.addPut('setJobToCompleted', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/COMPLETED');
+              jobDom.addPut('setJobToLocked', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/LOCKED');
+              jobDom.addPut('setJobToStopped', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/STOPPED');
+              jobDom.addPut('setJobToScheduled', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/SCHEDULED');
+              jobDom.addPut('setJobToNew', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/NEW');
+              jobDom.addPut('setJobToOnHold', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/ON_HOLD');
+              resultDTOData.push(jobDom);
+            });
+          }
+          res.status(200).send(domain);
+        }
+      });
+    });
+    app.get(API + 'jobs/:status', (req, res) => {
+      eventJobService.getJobsByStatus(req.params.status, (err, result) => {
         if (err) {
           res.status(500).send(new GDSDomainDTO('ERROR_MESSAGE', err.message));
         } else {
