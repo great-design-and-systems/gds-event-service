@@ -1,8 +1,10 @@
 import CreateEventJob from '../control/event-job/create-event-job';
 import GetEventByName from '../control/event/get-event-by-name';
 import GetEventContextById from '../control/event-context/get-event-context-by-id';
+import GetEventContextByJobId from '../control/event-context/get-event-context-by-job-id';
 import GetEventJobById from '../control/event-job/get-event-job-by-id';
 import GetEventJobs from '../control/event-job/get-event-jobs';
+import GetEventJobsByStatus from '../control/event-job/get-event-jobs-by-status';
 import GetEventTypeScheduledByJobId from '../control/event-type-scheduled/get-event-type-scheduled-by-job-id';
 import RemoveEventContextById from '../control/event-context/remove-event-context-by-job-id';
 import RemoveEventContextByJobId from '../control/event-context/remove-event-context-by-job-id';
@@ -20,7 +22,7 @@ import UpdateEventJobStatusToNew from '../control/event-job/update-event-job-sta
 import UpdateEventJobStatusToOnHold from '../control/event-job/update-event-job-status-to-on-hold';
 import UpdateEventJobStatusToScheduled from '../control/event-job/update-event-job-status-to-scheduled';
 import UpdateEventJobStatusToStopped from '../control/event-job/update-event-job-status-to-stopped';
-import GetEventJobsByStatus from '../control/event-job/get-event-jobs-by-status';
+
 export default class EventJobService {
   getJobsByStatus(status, callback) {
     new GetEventJobsByStatus(status, callback);
@@ -147,6 +149,9 @@ export default class EventJobService {
         new UpdateEventJobStatusToOnHold(eventJobId, callback);
         break;
     }
+  }
+  getContextFieldByJobId(eventJobId, callback) {
+    new GetEventContextByJobId(eventJobId, callback);
   }
 }
 

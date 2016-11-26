@@ -29,6 +29,7 @@ export default class EventResource {
       domain.addPut('updateJobStatus', 'http://' + req.headers.host + API + 'jobs/:eventJobId/set-status/:status');
       domain.addGet('getJobs', 'http://' + req.headers.host + API + 'jobs');
       domain.addGet('getJobsByStatus', 'http://' + req.headers.host + API + 'jobs/:status');
+      domain.addGet('getContextFieldByJobId', 'http://' + req.headers.host + API + 'get-context-field-by-job-id/:eventJobId');
       res.status(200).send(domain);
     });
 
@@ -263,6 +264,7 @@ export default class EventResource {
           const domain = new GDSDomainDTO('GET-JOB-BY-ID', result);
           if (result) {
             domain.addDelete('removeJob', 'http://' + req.headers.host + API + 'remove-job/' + result._id);
+            domain.addGet('getContextFieldByJobId', 'http://' + req.headers.host + API + 'get-context-field-by-job-id/' + result._id);
             domain.addPut('setJobToInProgress', 'http://' + req.headers.host + API + 'jobs/' + result._id + '/set-status/IN_PROGRESS');
             domain.addPut('setJobToCompleted', 'http://' + req.headers.host + API + 'jobs/' + result._id + '/set-status/COMPLETED');
             domain.addPut('setJobToLocked', 'http://' + req.headers.host + API + 'jobs/' + result._id + '/set-status/LOCKED');
@@ -315,6 +317,7 @@ export default class EventResource {
             result.forEach((job) => {
               const jobDom = new GDSDomainDTO('JOB', job);
               jobDom.addDelete('removeJob', 'http://' + req.headers.host + API + 'remove-job/' + job._id);
+              jobDom.addGet('getContextFieldByJobId', 'http://' + req.headers.host + API + 'get-context-field-by-job-id/' + job._id);
               jobDom.addPut('setJobToInProgress', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/IN_PROGRESS');
               jobDom.addPut('setJobToCompleted', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/COMPLETED');
               jobDom.addPut('setJobToLocked', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/LOCKED');
@@ -340,6 +343,7 @@ export default class EventResource {
             result.forEach((job) => {
               const jobDom = new GDSDomainDTO('JOB', job);
               jobDom.addDelete('removeJob', 'http://' + req.headers.host + API + 'remove-job/' + job._id);
+              jobDom.addGet('getContextFieldByJobId', 'http://' + req.headers.host + API + 'get-context-field-by-job-id/' + job._id);
               jobDom.addPut('setJobToInProgress', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/IN_PROGRESS');
               jobDom.addPut('setJobToCompleted', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/COMPLETED');
               jobDom.addPut('setJobToLocked', 'http://' + req.headers.host + API + 'jobs/' + job._id + '/set-status/LOCKED');
@@ -355,5 +359,27 @@ export default class EventResource {
       });
     });
 
+    app.get(API + 'get-context-field-by-job-id/:eventJobId', (req, res) => {
+      eventJobService.getContextFieldByJobId(req.params.eventJobId, (err, result) => {
+        if (err) {
+          res.status(500).send(new GDSDomainDTO('ERROR_MESSAGE',
+            err.message
+          ));
+        } else {
+          const contexts = [];
+          const domain = new GDSDomainDTO('EVENT_CONTEXTS', contexts);
+          if (result) {
+            result.forEach(context => {
+              const contextDomain = new GDSDomainDTO('EVENT_CONTEXT', context);
+              contextDomain.addGet('getContextFieldById', 'http://' + req.headers.host + API + 'get-context-field-by-id/' + context._id);
+              contextDomain.addDelete('removeContextFieldById', 'http://' + req.headers.host + API + 'remove-context-field-by-id/' + context._id);
+              contextDomain.addPut('updateContextField', 'http://' + req.headers.host + API + 'update-context-field/' + context._id);
+              contexts.push(contextDomain);
+            });
+          }
+          res.status(200).send(domain);
+        }
+      });
+    });
   }
 }
