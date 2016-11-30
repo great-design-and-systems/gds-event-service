@@ -28,6 +28,7 @@ export default class EventResource {
       domain.addPut('updateContextField', 'http://' + req.headers.host + API + 'update-context-field/:contextId');
       domain.addPut('updateJobStatus', 'http://' + req.headers.host + API + 'jobs/:eventJobId/set-status/:status');
       domain.addGet('getJobs', 'http://' + req.headers.host + API + 'jobs');
+      domain.addGet('getJobById', 'http://' + req.headers.host + API + 'get-job/:eventJobId');
       domain.addGet('getJobsByStatus', 'http://' + req.headers.host + API + 'jobs/:status');
       domain.addGet('getContextFieldByJobId', 'http://' + req.headers.host + API + 'get-context-field-by-job-id/:eventJobId');
       res.status(200).send(domain);
