@@ -1,10 +1,10 @@
 import EventTypeProcedureModel from '../../entity/event-type-procedure';
 
 export default class GetEventTypeProcedureByJobId {
-  constructor(eventJobId, interval, callback) {
+  constructor(eventJobId, callback) {
     EventTypeProcedureModel.find({
-        rootEventJobId: eventJobId
-      },
+      eventJobId: eventJobId
+    },
       (err, result) => {
         if (err) {
           callback({

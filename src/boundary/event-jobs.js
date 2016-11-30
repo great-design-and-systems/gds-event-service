@@ -5,6 +5,7 @@ import GetEventContextByJobId from '../control/event-context/get-event-context-b
 import GetEventJobById from '../control/event-job/get-event-job-by-id';
 import GetEventJobs from '../control/event-job/get-event-jobs';
 import GetEventJobsByStatus from '../control/event-job/get-event-jobs-by-status';
+import GetEventTypeProcedureByJobId from '../control/event-type-procedure/get-event-type-procedure-by-job-id';
 import GetEventTypeScheduledByJobId from '../control/event-type-scheduled/get-event-type-scheduled-by-job-id';
 import RemoveEventContextById from '../control/event-context/remove-event-context-by-job-id';
 import RemoveEventContextByJobId from '../control/event-context/remove-event-context-by-job-id';
@@ -114,7 +115,45 @@ export default class EventJobService {
     });
   }
   getEventJobById(eventJobId, callback) {
-    new GetEventJobById(eventJobId, callback);
+    new GetEventJobById(eventJobId, (errJob, job) => {
+      try {
+        if (errJob) {
+          throw errJob;
+        }
+        const result = {};
+        const eventType = job.eventType;
+        const jobId = job._id;
+        result._id = jobId;
+        result.eventType = eventType;
+        result.status = job.status;
+        result.action = job.action;
+        result.triggeredBy = job.triggeredBy;
+        result.createdOn = job.createdOn;
+        switch (eventType) {
+          case 'PROCEDURE':
+            new GetEventTypeProcedureByJobId(jobId, (errProcJob, procedure) => {
+              if (errProcJob) {
+                throw errProcJob;
+              }
+              result.procedure = procedure;
+              callback(undefined, result);
+            });
+            break;
+          case 'SCHEDULED':
+            new GetEventTypeScheduledByJobId(jobId, (errSchedJob, scheduled) => {
+              result.scheduled = scheduled;
+              callback(undefined, result);
+            });
+            break;
+          default:
+            callback(undefined, result);
+            break;
+        }
+      } catch (err) {
+        global.gdsLogger.logError(err);
+        callback(err);
+      }
+    });
   }
   getContextField(contextId, callback) {
     new GetEventContextById(contextId, callback);
