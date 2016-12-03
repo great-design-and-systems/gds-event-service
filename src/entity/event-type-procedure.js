@@ -9,6 +9,9 @@ const EventTypeProcedureSchema = mongoose.Schema({
     nextEventJobId: {
         type: String
     },
+    context: {
+        type: String
+    },
     createdOn: { type: Date, default: Date.now }
 });
 EventTypeProcedureSchema.plugin(mongoosePaginate);
