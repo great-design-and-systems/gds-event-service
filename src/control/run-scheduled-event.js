@@ -27,7 +27,7 @@ export default class RunScheduledEvent {
                                     message: 'Failed creating event job for scheduled event type'
                                 });
                             } else {
-                                new CreateEventTypeScheduled(processJob._id, nextEventJob.jobId, context.data.cronInterval, (errScheduled) => {
+                                new CreateEventTypeScheduled(processJob._id, nextEventJob.jobId, context.data.dateTime, (errScheduled) => {
                                     if (errScheduled) {
                                         global.gdsLogger.logError(errScheduled);
                                         new RemoveEventJobById(processJob._id, () => {
@@ -61,8 +61,8 @@ export default class RunScheduledEvent {
 }
 
 function contextValidation(context) {
-    if (!context.data.cronInterval) {
-        throw new Error('data.cronInterval is required for this event type.');
+    if (!context.data.dateTime) {
+        throw new Error('data.dateTime is required for this event type.');
     } else if (!context.data.nextEvent) {
         throw new Error('data.nextEvent object is required for this event type.');
     } else if (!context.data.nextEvent.eventType) {

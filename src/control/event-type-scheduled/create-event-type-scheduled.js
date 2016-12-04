@@ -1,11 +1,11 @@
 import EventTypeScheduledModel from '../../entity/event-type-scheduled';
 
 export default class CreateEventTypeScheduled {
-    constructor(eventJobId, nextEventJobId, cronInterval, callback) {
+    constructor(eventJobId, nextEventJobId, dateTime, callback) {
         EventTypeScheduledModel.create({
             eventJobId: eventJobId,
             nextEventJobId: nextEventJobId,
-            cronInterval: cronInterval
+            dateTime: dateTime
         }, (err, result) => {
             if (err) {
                 global.gdsLogger.logError(err);

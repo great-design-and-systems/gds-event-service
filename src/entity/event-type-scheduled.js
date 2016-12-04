@@ -10,9 +10,9 @@ const EventTypeScheduledSchema = mongoose.Schema({
         type: String,
         required: [true, 'Next event job id is required.']
     },
-    cronInterval: {
-        type: String,
-        required: [true, 'Cron interval  value is required.']
+    dateTime: {
+        type: Date,
+        required: [true, 'Date is required.']
     },
     createdOn: { type: Date, default: Date.now }
 });
