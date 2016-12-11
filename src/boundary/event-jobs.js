@@ -132,19 +132,10 @@ export default class EventJobService {
                 result.createdOn = job.createdOn;
                 switch (eventType) {
                     case 'PROCEDURE':
-                        new GetEventTypeProcedureByJobId(jobId, (errProcJob, procedure) => {
-                            if (errProcJob) {
-                                throw errProcJob;
-                            }
-                            result.procedure = procedure;
-                            callback(undefined, result);
-                        });
+                        getProcedure(jobId, result, callback);
                         break;
                     case 'SCHEDULED':
-                        new GetEventTypeScheduledByJobId(jobId, (errSchedJob, scheduled) => {
-                            result.scheduled = scheduled;
-                            callback(undefined, result);
-                        });
+                        getScheduledd(jobId, result, callback);
                         break;
                     default:
                         callback(undefined, result);
@@ -210,4 +201,45 @@ function eventValidation(context) {
     } else if (!context.session) {
         throw new Error('Request session is required.');
     }
+}
+
+function getProcedure(jobId, result, callback) {
+    new GetEventTypeProcedureByJobId(jobId, (errProcJob, procedure) => {
+        try {
+            if (errProcJob) {
+                throw errProcJob;
+            }
+            if (procedure || procedure != null) {
+                result.procedure = procedure;
+                callback(undefined, result);
+            } else {
+                setTimeout(() => {
+                    getProcedure(jobId, result, callback);
+                }, 1000);
+            }
+        } catch (err) {
+            callback(err);
+        }
+    });
+}
+
+function getScheduled(jobId, result, callback) {
+    new GetEventTypeScheduledByJobId(jobId, (errSchedJob, scheduled) => {
+        try {
+            if (errSchedJob) {
+                throw errSchedJob;
+            }
+            if (scheduled || scheduled != null) {
+                result.scheduled = scheduled;
+                callback(undefined, result);
+            } else {
+                setTimeout(() => {
+                    getScheduled(jobId, result, callback);
+                }, 1000);
+            }
+        } catch (err) {
+            callback(err);
+        }
+
+    });
 }
