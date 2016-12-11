@@ -259,6 +259,7 @@ export default class EventResource {
         app.get(API + 'get-job/:eventJobId', (req, res) => {
             eventJobService.getEventJobById(req.params.eventJobId, (err, result) => {
                 if (err) {
+                    global.gdsLogger.logError(err);
                     res.status(500).send(new GDSDomainDTO('ERROR_MESSAGE',
                         err.message
                     ));

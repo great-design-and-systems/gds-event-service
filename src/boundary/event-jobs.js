@@ -135,7 +135,7 @@ export default class EventJobService {
                         getProcedure(jobId, result, callback);
                         break;
                     case 'SCHEDULED':
-                        getScheduledd(jobId, result, callback);
+                        getScheduled(jobId, result, callback);
                         break;
                     default:
                         callback(undefined, result);
@@ -206,10 +206,7 @@ function eventValidation(context) {
 function getProcedure(jobId, result, callback) {
     new GetEventTypeProcedureByJobId(jobId, (errProcJob, procedure) => {
         try {
-            if (errProcJob) {
-                throw errProcJob;
-            }
-            if (procedure || procedure != null) {
+            if (!errProcJob && (procedure || procedure != null)) {
                 result.procedure = procedure;
                 callback(undefined, result);
             } else {
@@ -226,10 +223,7 @@ function getProcedure(jobId, result, callback) {
 function getScheduled(jobId, result, callback) {
     new GetEventTypeScheduledByJobId(jobId, (errSchedJob, scheduled) => {
         try {
-            if (errSchedJob) {
-                throw errSchedJob;
-            }
-            if (scheduled || scheduled != null) {
+            if (!errSchedJob && (scheduled || scheduled != null)) {
                 result.scheduled = scheduled;
                 callback(undefined, result);
             } else {
